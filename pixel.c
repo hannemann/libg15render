@@ -17,6 +17,8 @@
 */
 
 #include <fcntl.h>
+#include <stdlib.h>
+#include <math.h>
 #include "libg15render.h"
 
 void
