@@ -13,7 +13,7 @@ extern "C"
     #endif
     
     #ifdef TTF_SUPPORT
-    #include <ft2build.h>
+    #include <freetype2/ft2build.h>
     #include FT_FREETYPE_H
     #include FT_BITMAP_H
     #endif
