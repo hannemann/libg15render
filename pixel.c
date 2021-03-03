@@ -1,20 +1,20 @@
 /*
-    This file is part of g15tools.
-
-    g15tools is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    g15tools is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with g15lcd; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ *    This file is part of g15tools.
+ * 
+ *    g15tools is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation; either version 2 of the License, or
+ *    (at your option) any later version.
+ * 
+ *    g15tools is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ * 
+ *    You should have received a copy of the GNU General Public License
+ *    along with g15lcd; if not, write to the Free Software
+ *    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 #include <fcntl.h>
 #include <stdlib.h>
@@ -24,11 +24,11 @@
 void
 swap (int *x, int *y)
 {
-  int tmp;
-
-  tmp = *x;
-  *x = *y;
-  *y = tmp;
+    int tmp;
+    
+    tmp = *x;
+    *x = *y;
+    *y = tmp;
 }
 
 /** 
@@ -45,19 +45,19 @@ swap (int *x, int *y)
  */
 void
 g15r_pixelReverseFill (g15canvas * canvas, int x1, int y1, int x2, int y2,
-		       int fill, int color)
+                       int fill, int color)
 {
-  int x = 0;
-  int y = 0;
-
-  for (x = x1; x <= x2; ++x)
+    int x = 0;
+    int y = 0;
+    
+    for (x = x1; x <= x2; ++x)
     {
-      for (y = y1; y <= y2; ++y)
-	{
-	  if (!fill)
-	    color = !g15r_getPixel (canvas, x, y);
-	  g15r_setPixel (canvas, x, y, color);
-	}
+        for (y = y1; y <= y2; ++y)
+        {
+            if (!fill)
+                color = !g15r_getPixel (canvas, x, y);
+            g15r_setPixel (canvas, x, y, color);
+        }
     }
 }
 
@@ -74,16 +74,16 @@ g15r_pixelReverseFill (g15canvas * canvas, int x1, int y1, int x2, int y2,
  */
 void
 g15r_pixelOverlay (g15canvas * canvas, int x1, int y1, int width, int height,
-		   short colormap[])
+                   short colormap[])
 {
-  int i = 0;
-
-  for (i = 0; i < (width * height); ++i)
+    int i = 0;
+    
+    for (i = 0; i < (width * height); ++i)
     {
-      int color = (colormap[i] ? G15_COLOR_BLACK : G15_COLOR_WHITE);
-      int x = x1 + i % width;
-      int y = y1 + i / width;
-      g15r_setPixel (canvas, x, y, color);
+        int color = (colormap[i] ? G15_COLOR_BLACK : G15_COLOR_WHITE);
+        int x = x1 + i % width;
+        int y = y1 + i / width;
+        g15r_setPixel (canvas, x, y, color);
     }
 }
 
@@ -99,51 +99,51 @@ g15r_pixelOverlay (g15canvas * canvas, int x1, int y1, int width, int height,
  */
 void
 g15r_drawLine (g15canvas * canvas, int px1, int py1, int px2, int py2,
-	       const int color)
+               const int color)
 {
-  /* 
-   * Bresenham's Line Algorithm
-   * http://en.wikipedia.org/wiki/Bresenham's_algorithm
-   */
-
-  int steep = 0;
-
-  if (abs (py2 - py1) > abs (px2 - px1))
-    steep = 1;
-
-  if (steep)
+    /* 
+     * Bresenham's Line Algorithm
+     * http://en.wikipedia.org/wiki/Bresenham's_algorithm
+     */
+    
+    int steep = 0;
+    
+    if (abs (py2 - py1) > abs (px2 - px1))
+        steep = 1;
+    
+    if (steep)
     {
-      swap (&px1, &py1);
-      swap (&px2, &py2);
+        swap (&px1, &py1);
+        swap (&px2, &py2);
     }
-
-  if (px1 > px2)
+    
+    if (px1 > px2)
     {
-      swap (&px1, &px2);
-      swap (&py1, &py2);
+        swap (&px1, &px2);
+        swap (&py1, &py2);
     }
-
-  int dx = px2 - px1;
-  int dy = abs (py2 - py1);
-
-  int error = 0;
-  int y = py1;
-  int ystep = (py1 < py2) ? 1 : -1;
-  int x = 0;
-
-  for (x = px1; x <= px2; ++x)
+    
+    int dx = px2 - px1;
+    int dy = abs (py2 - py1);
+    
+    int error = 0;
+    int y = py1;
+    int ystep = (py1 < py2) ? 1 : -1;
+    int x = 0;
+    
+    for (x = px1; x <= px2; ++x)
     {
-      if (steep)
-	g15r_setPixel (canvas, y, x, color);
-      else
-	g15r_setPixel (canvas, x, y, color);
-
-      error += dy;
-      if (2 * error >= dx)
-	{
-	  y += ystep;
-	  error -= dx;
-	}
+        if (steep)
+            g15r_setPixel (canvas, y, x, color);
+        else
+            g15r_setPixel (canvas, x, y, color);
+        
+        error += dy;
+        if (2 * error >= dx)
+        {
+            y += ystep;
+            error -= dx;
+        }
     }
 }
 
@@ -163,30 +163,30 @@ g15r_drawLine (g15canvas * canvas, int px1, int py1, int px2, int py2,
  */
 void
 g15r_pixelBox (g15canvas * canvas, int x1, int y1, int x2, int y2, int color,
-	       int thick, int fill)
+               int thick, int fill)
 {
-  int i = 0;
-  for (i = 0; i < thick; ++i)
+    int i = 0;
+    for (i = 0; i < thick; ++i)
     {
-      g15r_drawLine (canvas, x1, y1, x2, y1, color);	/* Top    */
-      g15r_drawLine (canvas, x1, y1, x1, y2, color);	/* Left   */
-      g15r_drawLine (canvas, x2, y1, x2, y2, color);	/* Right  */
-      g15r_drawLine (canvas, x1, y2, x2, y2, color);	/* Bottom */
-      x1++;
-      y1++;
-      x2--;
-      y2--;
+        g15r_drawLine (canvas, x1, y1, x2, y1, color);	/* Top    */
+        g15r_drawLine (canvas, x1, y1, x1, y2, color);	/* Left   */
+        g15r_drawLine (canvas, x2, y1, x2, y2, color);	/* Right  */
+        g15r_drawLine (canvas, x1, y2, x2, y2, color);	/* Bottom */
+        x1++;
+        y1++;
+        x2--;
+        y2--;
     }
-
-  int x = 0, y = 0;
-
-  if (fill)
+    
+    int x = 0, y = 0;
+    
+    if (fill)
     {
-      for (x = x1; x <= x2; ++x)
-	for (y = y1; y <= y2; ++y)
-	  g15r_setPixel (canvas, x, y, color);
+        for (x = x1; x <= x2; ++x)
+            for (y = y1; y <= y2; ++y)
+                g15r_setPixel (canvas, x, y, color);
     }
-
+    
 }
 
 /**
@@ -204,36 +204,36 @@ g15r_pixelBox (g15canvas * canvas, int x1, int y1, int x2, int y2, int color,
 void
 g15r_drawCircle (g15canvas * canvas, int x, int y, int r, int fill, int color)
 {
-  int xx, yy, dd;
-
-  xx = 0;
-  yy = r;
-  dd = 2 * (1 - r);
-
-  while (yy >= 0)
+    int xx, yy, dd;
+    
+    xx = 0;
+    yy = r;
+    dd = 2 * (1 - r);
+    
+    while (yy >= 0)
     {
-      if (!fill)
-	{
-	  g15r_setPixel (canvas, x + xx, y - yy, color);
-	  g15r_setPixel (canvas, x + xx, y + yy, color);
-	  g15r_setPixel (canvas, x - xx, y - yy, color);
-	  g15r_setPixel (canvas, x - xx, y + yy, color);
-	}
-      else
-	{
-	  g15r_drawLine (canvas, x - xx, y - yy, x + xx, y - yy, color);
-	  g15r_drawLine (canvas, x - xx, y + yy, x + xx, y + yy, color);
-	}
-      if (dd + yy > 0)
-	{
-	  yy--;
-	  dd = dd - (2 * yy + 1);
-	}
-      if (xx > dd)
-	{
-	  xx++;
-	  dd = dd + (2 * xx + 1);
-	}
+        if (!fill)
+        {
+            g15r_setPixel (canvas, x + xx, y - yy, color);
+            g15r_setPixel (canvas, x + xx, y + yy, color);
+            g15r_setPixel (canvas, x - xx, y - yy, color);
+            g15r_setPixel (canvas, x - xx, y + yy, color);
+        }
+        else
+        {
+            g15r_drawLine (canvas, x - xx, y - yy, x + xx, y - yy, color);
+            g15r_drawLine (canvas, x - xx, y + yy, x + xx, y + yy, color);
+        }
+        if (dd + yy > 0)
+        {
+            yy--;
+            dd = dd - (2 * yy + 1);
+        }
+        if (xx > dd)
+        {
+            xx++;
+            dd = dd + (2 * xx + 1);
+        }
     }
 }
 
@@ -252,73 +252,73 @@ g15r_drawCircle (g15canvas * canvas, int x, int y, int r, int fill, int color)
  */
 void
 g15r_drawRoundBox (g15canvas * canvas, int x1, int y1, int x2, int y2,
-		   int fill, int color)
+                   int fill, int color)
 {
-  int y, shave = 3;
-
-  if (shave > (x2 - x1) / 2)
-    shave = (x2 - x1) / 2;
-  if (shave > (y2 - y1) / 2)
-    shave = (y2 - y1) / 2;
-
-  if ((x1 != x2) && (y1 != y2))
+    int y, shave = 3;
+    
+    if (shave > (x2 - x1) / 2)
+        shave = (x2 - x1) / 2;
+    if (shave > (y2 - y1) / 2)
+        shave = (y2 - y1) / 2;
+    
+    if ((x1 != x2) && (y1 != y2))
     {
-      if (fill)
-	{
-	  g15r_drawLine (canvas, x1 + shave, y1, x2 - shave, y1, color);
-	  for (y = y1 + 1; y < y1 + shave; y++)
-	    g15r_drawLine (canvas, x1 + 1, y, x2 - 1, y, color);
-	  for (y = y1 + shave; y <= y2 - shave; y++)
-	    g15r_drawLine (canvas, x1, y, x2, y, color);
-	  for (y = y2 - shave + 1; y < y2; y++)
-	    g15r_drawLine (canvas, x1 + 1, y, x2 - 1, y, color);
-	  g15r_drawLine (canvas, x1 + shave, y2, x2 - shave, y2, color);
-	  if (shave == 4)
-	    {
-	      g15r_setPixel (canvas, x1 + 1, y1 + 1,
-			     color ==
-			     G15_COLOR_WHITE ? G15_COLOR_BLACK :
-			     G15_COLOR_WHITE);
-	      g15r_setPixel (canvas, x1 + 1, y2 - 1,
-			     color ==
-			     G15_COLOR_WHITE ? G15_COLOR_BLACK :
-			     G15_COLOR_WHITE);
-	      g15r_setPixel (canvas, x2 - 1, y1 + 1,
-			     color ==
-			     G15_COLOR_WHITE ? G15_COLOR_BLACK :
-			     G15_COLOR_WHITE);
-	      g15r_setPixel (canvas, x2 - 1, y2 - 1,
-			     color ==
-			     G15_COLOR_WHITE ? G15_COLOR_BLACK :
-			     G15_COLOR_WHITE);
-	    }
-	}
-      else
-	{
-	  g15r_drawLine (canvas, x1 + shave, y1, x2 - shave, y1, color);
-	  g15r_drawLine (canvas, x1, y1 + shave, x1, y2 - shave, color);
-	  g15r_drawLine (canvas, x2, y1 + shave, x2, y2 - shave, color);
-	  g15r_drawLine (canvas, x1 + shave, y2, x2 - shave, y2, color);
-	  if (shave > 1)
-	    {
-	      g15r_drawLine (canvas, x1 + 1, y1 + 1, x1 + shave - 1, y1 + 1,
-			     color);
-	      g15r_drawLine (canvas, x2 - shave + 1, y1 + 1, x2 - 1, y1 + 1,
-			     color);
-	      g15r_drawLine (canvas, x1 + 1, y2 - 1, x1 + shave - 1, y2 - 1,
-			     color);
-	      g15r_drawLine (canvas, x2 - shave + 1, y2 - 1, x2 - 1, y2 - 1,
-			     color);
-	      g15r_drawLine (canvas, x1 + 1, y1 + 1, x1 + 1, y1 + shave - 1,
-			     color);
-	      g15r_drawLine (canvas, x1 + 1, y2 - 1, x1 + 1, y2 - shave + 1,
-			     color);
-	      g15r_drawLine (canvas, x2 - 1, y1 + 1, x2 - 1, y1 + shave - 1,
-			     color);
-	      g15r_drawLine (canvas, x2 - 1, y2 - 1, x2 - 1, y2 - shave + 1,
-			     color);
-	    }
-	}
+        if (fill)
+        {
+            g15r_drawLine (canvas, x1 + shave, y1, x2 - shave, y1, color);
+            for (y = y1 + 1; y < y1 + shave; y++)
+                g15r_drawLine (canvas, x1 + 1, y, x2 - 1, y, color);
+            for (y = y1 + shave; y <= y2 - shave; y++)
+                g15r_drawLine (canvas, x1, y, x2, y, color);
+            for (y = y2 - shave + 1; y < y2; y++)
+                g15r_drawLine (canvas, x1 + 1, y, x2 - 1, y, color);
+            g15r_drawLine (canvas, x1 + shave, y2, x2 - shave, y2, color);
+            if (shave == 4)
+            {
+                g15r_setPixel (canvas, x1 + 1, y1 + 1,
+                               color ==
+                               G15_COLOR_WHITE ? G15_COLOR_BLACK :
+                               G15_COLOR_WHITE);
+                g15r_setPixel (canvas, x1 + 1, y2 - 1,
+                               color ==
+                               G15_COLOR_WHITE ? G15_COLOR_BLACK :
+                               G15_COLOR_WHITE);
+                g15r_setPixel (canvas, x2 - 1, y1 + 1,
+                               color ==
+                               G15_COLOR_WHITE ? G15_COLOR_BLACK :
+                               G15_COLOR_WHITE);
+                g15r_setPixel (canvas, x2 - 1, y2 - 1,
+                               color ==
+                               G15_COLOR_WHITE ? G15_COLOR_BLACK :
+                               G15_COLOR_WHITE);
+            }
+        }
+        else
+        {
+            g15r_drawLine (canvas, x1 + shave, y1, x2 - shave, y1, color);
+            g15r_drawLine (canvas, x1, y1 + shave, x1, y2 - shave, color);
+            g15r_drawLine (canvas, x2, y1 + shave, x2, y2 - shave, color);
+            g15r_drawLine (canvas, x1 + shave, y2, x2 - shave, y2, color);
+            if (shave > 1)
+            {
+                g15r_drawLine (canvas, x1 + 1, y1 + 1, x1 + shave - 1, y1 + 1,
+                               color);
+                g15r_drawLine (canvas, x2 - shave + 1, y1 + 1, x2 - 1, y1 + 1,
+                               color);
+                g15r_drawLine (canvas, x1 + 1, y2 - 1, x1 + shave - 1, y2 - 1,
+                               color);
+                g15r_drawLine (canvas, x2 - shave + 1, y2 - 1, x2 - 1, y2 - 1,
+                               color);
+                g15r_drawLine (canvas, x1 + 1, y1 + 1, x1 + 1, y1 + shave - 1,
+                               color);
+                g15r_drawLine (canvas, x1 + 1, y2 - 1, x1 + 1, y2 - shave + 1,
+                               color);
+                g15r_drawLine (canvas, x2 - 1, y1 + 1, x2 - 1, y1 + shave - 1,
+                               color);
+                g15r_drawLine (canvas, x2 - 1, y2 - 1, x2 - 1, y2 - shave + 1,
+                               color);
+            }
+        }
     }
 }
 
@@ -337,46 +337,46 @@ g15r_drawRoundBox (g15canvas * canvas, int x1, int y1, int x2, int y2,
  */
 void
 g15r_drawBar (g15canvas * canvas, int x1, int y1, int x2, int y2, int color,
-	      int num, int max, int type)
+              int num, int max, int type)
 {
-  float len, length;
-  int x;
-  if (max == 0)
-    return;
-  if (num > max)
-    num = max;
-
-  if (type == 2)
+    float len, length;
+    int x;
+    if (max == 0)
+        return;
+    if (num > max)
+        num = max;
+    
+    if (type == 2)
     {
-      y1 += 2;
-      y2 -= 2;
-      x1 += 2;
-      x2 -= 2;
+        y1 += 2;
+        y2 -= 2;
+        x1 += 2;
+        x2 -= 2;
     }
-
-  len = ((float) max / (float) num);
-  length = (x2 - x1) / len;
-
-  if (type == 1)
+    
+    len = ((float) max / (float) num);
+    length = (x2 - x1) / len;
+    
+    if (type == 1)
     {
-      g15r_pixelBox (canvas, x1, y1 - type, x2, y2 + type, color ^ 1, 1, 1);
-      g15r_pixelBox (canvas, x1, y1 - type, x2, y2 + type, color, 1, 0);
+        g15r_pixelBox (canvas, x1, y1 - type, x2, y2 + type, color ^ 1, 1, 1);
+        g15r_pixelBox (canvas, x1, y1 - type, x2, y2 + type, color, 1, 0);
     }
-  else if (type == 2)
+    else if (type == 2)
     {
-      g15r_pixelBox (canvas, x1 - 2, y1 - type, x2 + 2, y2 + type, color ^ 1,
-		     1, 1);
-      g15r_pixelBox (canvas, x1 - 2, y1 - type, x2 + 2, y2 + type, color, 1,
-		     0);
+        g15r_pixelBox (canvas, x1 - 2, y1 - type, x2 + 2, y2 + type, color ^ 1,
+                       1, 1);
+        g15r_pixelBox (canvas, x1 - 2, y1 - type, x2 + 2, y2 + type, color, 1,
+                       0);
     }
-  else if (type == 3)
+    else if (type == 3)
     {
-      g15r_drawLine (canvas, x1, y1 - type, x1, y2 + type, color);
-      g15r_drawLine (canvas, x2, y1 - type, x2, y2 + type, color);
-      g15r_drawLine (canvas, x1, y1 + ((y2 - y1) / 2), x2,
-		     y1 + ((y2 - y1) / 2), color);
+        g15r_drawLine (canvas, x1, y1 - type, x1, y2 + type, color);
+        g15r_drawLine (canvas, x2, y1 - type, x2, y2 + type, color);
+        g15r_drawLine (canvas, x1, y1 + ((y2 - y1) / 2), x2,
+                       y1 + ((y2 - y1) / 2), color);
     }
-  g15r_pixelBox (canvas, x1, y1, (int) ceil (x1 + length), y2, color, 1, 1);
+    g15r_pixelBox (canvas, x1, y1, (int) ceil (x1 + length), y2, color, 1, 1);
 }
 
 /**
@@ -390,11 +390,11 @@ g15r_loadWbmpSplash(g15canvas *canvas, char *filename)
 {
     int width=0, height=0;
     char *buf;
-     
+    
     buf = g15r_loadWbmpToBuf(filename,
                              &width,
                              &height);
-
+    
     memcpy (canvas->buffer, buf, G15_BUFFER_LEN);
     return 0;
 }
@@ -415,16 +415,16 @@ g15r_drawIcon(g15canvas *canvas, char *buf, int my_x, int my_y, int width, int h
     int y,x,val;
     unsigned int pixel_offset = 0;
     unsigned int byte_offset, bit_offset;
-
+    
     for (y=0; y < height - 1; y++)
-      for (x=0; x < width - 1; x++)
+        for (x=0; x < width - 1; x++)
         {
-		pixel_offset = y * width + x;
-		byte_offset = pixel_offset / BYTE_SIZE;
-		bit_offset = 7 - (pixel_offset % BYTE_SIZE);
-
-		val = (buf[byte_offset] & (1 << bit_offset)) >> bit_offset;
-		g15r_setPixel (canvas, x + my_x, y + my_y, val);
+            pixel_offset = y * width + x;
+            byte_offset = pixel_offset / BYTE_SIZE;
+            bit_offset = 7 - (pixel_offset % BYTE_SIZE);
+            
+            val = (buf[byte_offset] & (1 << bit_offset)) >> bit_offset;
+            g15r_setPixel (canvas, x + my_x, y + my_y, val);
         }
 }
 
@@ -447,16 +447,16 @@ g15r_drawSprite(g15canvas *canvas, char *buf, int my_x, int my_y, int width, int
     int y,x,val;
     unsigned int pixel_offset = 0;
     unsigned int byte_offset, bit_offset;
-
+    
     for (y=0; y < height - 1; y++)
-      for (x=0; x < width - 1; x++)
+        for (x=0; x < width - 1; x++)
         {
-		pixel_offset = (y + start_y) * total_width + (x + start_x);
-		byte_offset = pixel_offset / BYTE_SIZE;
-		bit_offset = 7 - (pixel_offset % BYTE_SIZE);
-
-		val = (buf[byte_offset] & (1 << bit_offset)) >> bit_offset;
-		g15r_setPixel (canvas, x + my_x, y + my_y, val);
+            pixel_offset = (y + start_y) * total_width + (x + start_x);
+            byte_offset = pixel_offset / BYTE_SIZE;
+            bit_offset = 7 - (pixel_offset % BYTE_SIZE);
+            
+            val = (buf[byte_offset] & (1 << bit_offset)) >> bit_offset;
+            g15r_setPixel (canvas, x + my_x, y + my_y, val);
         }
 }
 
@@ -495,42 +495,42 @@ g15r_loadWbmpToBuf(char *filename, int *img_width, int *img_height)
             *img_width = headerbytes[2];
             *img_height = headerbytes[3];
         }
-
-	int byte_width = *img_width / 8;
-	if (*img_width %8)
-	  byte_width++;
-
+        
+        int byte_width = *img_width / 8;
+        if (*img_width %8)
+            byte_width++;
+        
         buflen = byte_width * (*img_height);
-
-	buf = (char *)malloc (buflen);
-	if (buf == NULL)
-	  return NULL;
-
-	if (header == 4)
-          buf[0]=headerbytes[4];
-
+        
+        buf = (char *)malloc (buflen);
+        if (buf == NULL)
+            return NULL;
+        
+        if (header == 4)
+            buf[0]=headerbytes[4];
+        
         retval=read(wbmp_fd,buf+(5-header),buflen);
-
+        
         close(wbmp_fd);
     }
-
+    
     /* now invert the image */
     for (y = 0; y < *img_height; y++)
-      for (x = 0; x < *img_width; x++)
+        for (x = 0; x < *img_width; x++)
         {
-		pixel_offset = y * (*img_width) + x;
-		byte_offset = pixel_offset / BYTE_SIZE;
-		bit_offset = 7 - (pixel_offset % BYTE_SIZE);
-
-		val = (buf[byte_offset] & (1 << bit_offset)) >> bit_offset;
-
-		if (!val)
-	      	  buf[byte_offset] = buf[byte_offset] | 1 << bit_offset;
-		else
-		  buf[byte_offset] = buf[byte_offset] & ~(1 << bit_offset);
-	}
-
-    return buf;
+            pixel_offset = y * (*img_width) + x;
+            byte_offset = pixel_offset / BYTE_SIZE;
+            bit_offset = 7 - (pixel_offset % BYTE_SIZE);
+            
+            val = (buf[byte_offset] & (1 << bit_offset)) >> bit_offset;
+            
+            if (!val)
+                buf[byte_offset] = buf[byte_offset] | 1 << bit_offset;
+            else
+                buf[byte_offset] = buf[byte_offset] & ~(1 << bit_offset);
+        }
+        
+        return buf;
 }
 
 /**
