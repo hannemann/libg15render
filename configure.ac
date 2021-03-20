@@ -1,8 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.71])
-AC_INIT([libg15render],[3.0],[menelkir@itroll.org])
+AC_INIT([libg15render],[3.0.2],[menelkir@itroll.org])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE()
 AC_CONFIG_SRCDIR([libg15render.h])
