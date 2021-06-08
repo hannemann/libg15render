@@ -1,7 +1,5 @@
-# $FreeBSD: head/sysutils/libg15render/Makefile 558187 2020-12-15 22:04:05Z makc $
-
 PORTNAME=	libg15render
-PORTVERSION=	3.0.2
+PORTVERSION=	3.0.3
 CATEGORIES=	sysutils
 MASTER_SITES=	https://gitlab.com/menelkir/${PORTNAME}/-/archive/${PORTVERSION}/
 
