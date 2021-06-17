@@ -1,3 +1,15 @@
+3.0.4
+* Some cleanup and fixes
+
+3.0.3
+* Updated config.guess and config.sub. Thanks  Nicolas F. (@CounterPillow)
+
+3.0.2
+* Remove AC PREREQ
+
+3.0.1
+* Fixup release
+
 3.0
 * Revamp the code
 
