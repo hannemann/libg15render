@@ -3,7 +3,7 @@ PORTVERSION=	3.0.3
 CATEGORIES=	sysutils
 MASTER_SITES=	https://gitlab.com/menelkir/${PORTNAME}/-/archive/${PORTVERSION}/
 
-MAINTAINER=	dmenelkir@gmaill.com
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Library to render the LCD screen on Logitech keyboards
 
 LICENSE=	GPLv2
